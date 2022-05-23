@@ -1,0 +1,1 @@
+Do not use any. You're basically opting out of typechecking. If you don't know what the type is yet, consider using `unknown`. There is always a better type.

@@ -1,0 +1,1 @@
+Please do not beg. If you have been told no and continue to ask, that is spamming. You have been given an answer, this will not change by continually asking.
