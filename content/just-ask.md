@@ -1,0 +1,1 @@
+Asking to ask or asking if someone is available is pointless. Just ask your question! If someone knows the answer, they'll do their best to help.

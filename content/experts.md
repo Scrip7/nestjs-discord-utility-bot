@@ -1,0 +1,1 @@
+Asking if there are any "experts" to help you implies very negative things. You're walling people who do not self-identify as experts (which is most people) off from answering your question, even though the question may not need any specific expertise whatsoever to answer. In general, phrasing your question in this way just discourages people from ever actually answering it.

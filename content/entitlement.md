@@ -1,0 +1,3 @@
+Please do not feel as if you are entitled to receive help here. People on this server who help out do so **in their free time** and may choose to help whomever they want.
+
+Furthermore, please be courteous of your fellow humans. People of all skill levels are allowed to offer and receive support. Additionally, just because someone is knowledgeable about a topic does not mean they will know the answer to your question/problem. This is a judgment-free server and we are all here to learn, regardless of skill level.

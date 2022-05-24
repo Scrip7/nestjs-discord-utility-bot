@@ -1,0 +1,1 @@
+Don't ask if someone can help you, ask a specific question. Make sure you've shared your code and described what went wrong.

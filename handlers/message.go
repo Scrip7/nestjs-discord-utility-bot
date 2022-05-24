@@ -52,7 +52,10 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// check cache if the tag exists
 		content, ok := cache.Driver.Get(message)
 		if ok {
-			s.ChannelMessageSend(m.ChannelID, content.(string))
+			s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+				Content: content.(string),
+				TTS:     false,
+			})
 		} else {
 			s.ChannelMessageSend(m.ChannelID, "Tag not found")
 		}

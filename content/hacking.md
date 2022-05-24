@@ -1,0 +1,1 @@
+Discussion about any type of botting, hacking, exploiting, modding, cheating, jail breaking, rooting, reverse engineering etc. that isn't authorized by the developers of the service is prohibited in NestJS Discord server. Talking about the existence of these subjects as a whole is fine, as long as you're not describing the process or encouraging it.
