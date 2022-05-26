@@ -1,0 +1,6 @@
+tmp/
+bin/
+data/
+build/
+.github/
+.env
