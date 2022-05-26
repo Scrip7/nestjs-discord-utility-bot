@@ -5,4 +5,4 @@
 4) __**Legibility**__ - You cannot read screenshots of code directly, instead you have to open them in an enlarged context.
 5) __**Bandwidth usage/clutter**__ - Some of our members use metered connections and it is wasteful for them to download images of text
 
-For a small amount of code please use a codeblock (`?tag codeblocks`), while an external repository (see `?tag bin` or `?tag code`) is suitable for larger codebase.
+For a small amount of code please use a codeblock (`/codeblocks`), while an external repository (see `/bin` or `/code`) is suitable for larger codebase.

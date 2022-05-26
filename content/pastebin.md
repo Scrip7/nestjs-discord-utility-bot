@@ -1,1 +1,1 @@
-Pastebin isn't great because it has a lot of ads, an intrusive interface, and it tries to get you to subscribe to it's service. Consider using an alternative such as hastebin. More alternatives are listed in `?tag code`.
+Pastebin isn't great because it has a lot of ads, an intrusive interface, and it tries to get you to subscribe to it's service. Consider using an alternative such as hastebin. More alternatives are listed in `/code`.
