@@ -31,9 +31,6 @@ RUN ["go", "build", "-o", "build/${APP_NAME}"]
 #
 FROM alpine:3.16.0 as prod
 
-# file and iconv commands
-RUN apk add --no-cache gnu-libiconv file
-
 # By default, Docker runs container as root which inside of the container can pose as a security issue.
 # RUN addgroup -S app && adduser -S -G app app
 # USER app
