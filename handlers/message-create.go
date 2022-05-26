@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Scrip7/nestjs-discord-utility-bot/cache"
 	"github.com/bwmarrin/discordgo"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -24,6 +26,22 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "ping" {
 		s.ChannelMessageSend(m.ChannelID, "Pong!")
+		return
+	}
+
+	// TODO: only allow admins to use this command
+	if m.Content == "register-commands" {
+		registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
+		for i, v := range commands {
+			cmd, err := s.ApplicationCommandCreate(s.State.User.ID, m.GuildID, v)
+			if err != nil {
+				logrus.Errorf("Cannot create '%v' command: %v", v.Name, err)
+				s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Cannot create '%v' command: %v", v.Name, err))
+				return
+			}
+			registeredCommands[i] = cmd
+		}
+		s.ChannelMessageSend(m.ChannelID, "slash commands registered!")
 		return
 	}
 

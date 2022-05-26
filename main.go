@@ -26,7 +26,9 @@ func main() {
 	}
 
 	// Discord event handlers
+	dg.AddHandler(handlers.Ready)
 	dg.AddHandler(handlers.MessageCreate)
+	dg.AddHandler(handlers.InteractionCreate)
 
 	// we only care about receiving message events
 	dg.Identify.Intents = discordgo.IntentsGuildMessages
@@ -36,25 +38,6 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("error opening connection: %v", err)
 	}
-
-	user, err := dg.User("@me")
-	if err != nil {
-		logrus.Fatalf("error getting @me user: %v", err)
-	}
-	logrus.WithField("id", user.ID).Info("Bot is running")
-
-	if err = dg.UpdateStatusComplex(discordgo.UpdateStatusData{
-		Activities: []*discordgo.Activity{
-			{
-				Name: handlers.COMMAND_PREFIX,
-				Type: discordgo.ActivityTypeListening,
-			},
-		},
-	}); err != nil {
-		logrus.Fatalf("error updating status: %v", err)
-	}
-	// log updated status
-	logrus.Info("Bot status updated")
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
