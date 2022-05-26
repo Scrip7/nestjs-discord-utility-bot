@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Scrip7/nestjs-discord-utility-bot/commands"
+	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 )
 
@@ -27,16 +29,6 @@ func BootstrapContent() {
 			continue
 		}
 
-		// TODO: refactor this
-
-		// extract file name without the extension
-		name := f.Name()
-		name = name[:len(name)-len(ext)]
-		// replace spaces with dash
-		name = strings.Replace(name, " ", "-", -1)
-		// convert to lowercase
-		name = strings.ToLower(name)
-
 		// read file content
 		fileContent, err := ioutil.ReadFile("./content/" + f.Name())
 		if err != nil {
@@ -48,6 +40,10 @@ func BootstrapContent() {
 		// trim content
 		content = strings.TrimSpace(content)
 
+		name := f.Name()
+		// extract file name without the extension
+		name = name[:len(name)-len(ext)]
+
 		// cache file content with a cost of 1
 		Driver.Set(name, content, 1)
 		if err != nil {
@@ -56,6 +52,18 @@ func BootstrapContent() {
 
 		// wait for value to pass through buffers
 		Driver.Wait()
+
+		// trim content variable by max 95 characters
+		if len(content) > 95 {
+			// when the text is long, add "..." at the end of the string
+			content = content[:95] + "..."
+		}
+
+		commands.Commands = append(commands.Commands, &discordgo.ApplicationCommand{
+			Name: name,
+			// set description to the content of the file trim by 100 characters
+			Description: content,
+		})
 
 		logrus.WithField("cmd", name).Info("Content cached")
 	}

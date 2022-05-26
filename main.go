@@ -9,12 +9,13 @@ import (
 	"github.com/Scrip7/nestjs-discord-utility-bot/core"
 	"github.com/Scrip7/nestjs-discord-utility-bot/handlers"
 	"github.com/bwmarrin/discordgo"
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
 	core.InitLogger()
-	core.LoadConfig()
+	godotenv.Load()
 
 	cache.Init()
 	cache.BootstrapContent()
