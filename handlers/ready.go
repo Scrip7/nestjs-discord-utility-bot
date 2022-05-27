@@ -5,7 +5,6 @@ import (
 
 	"github.com/Scrip7/nestjs-discord-utility-bot/commands"
 	"github.com/bwmarrin/discordgo"
-	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
 )
 
@@ -23,15 +22,13 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 	// anonymous function to avoid code duplication
 	// in for loops below
 	isCMDRegistered := func(commandName string) bool {
-		if len(registeredCommands) == 0 {
-			return false
+		for _, v := range registeredCommands {
+			if v.Name == commandName {
+				return true
+			}
 		}
 
-		predicate := func(x *discordgo.ApplicationCommand) bool {
-			return commandName == x.Name
-		}
-
-		return lo.ContainsBy(registeredCommands, predicate)
+		return false
 	}
 
 	for _, v := range commands.Commands {
