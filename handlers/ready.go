@@ -1,47 +1,76 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/Scrip7/nestjs-discord-utility-bot/commands"
 	"github.com/bwmarrin/discordgo"
+	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
 )
 
 func Ready(s *discordgo.Session, m *discordgo.Ready) {
-	logrus.WithField("id", s.State.User.ID).Infof("Logged in as '%v#%v'", s.State.User.Username, s.State.User.Discriminator)
+	logrus.WithFields(logrus.Fields{
+		"id":       s.State.User.ID,
+		"username": fmt.Sprintf("%s#%s", s.State.User.Username, s.State.User.Discriminator),
+	}).Infof("Logged in as")
 
-	globalRegisteredCommands, err := s.ApplicationCommands(s.State.User.ID, "")
+	registeredCommands, err := s.ApplicationCommands(s.State.User.ID, "")
 	if err != nil {
-		logrus.Fatalf("Could not fetch registered commands: %v", err)
+		logrus.Fatalf("Failed to fetch registered app commands: %v", err)
 	}
 
-	// TODO: fix "Max number of daily application command creates has been reached (200)" problem
-	for _, v := range globalRegisteredCommands {
-		logrus.Warnf("Removing registered slash command: %v", v.Name)
+	// anonymous function to avoid code duplication
+	// in for loops below
+	isCMDRegistered := func(commandName string) bool {
+		if len(registeredCommands) == 0 {
+			return false
+		}
+
+		predicate := func(x *discordgo.ApplicationCommand) bool {
+			return commandName == x.Name
+		}
+
+		return lo.ContainsBy(registeredCommands, predicate)
+	}
+
+	for _, v := range commands.Commands {
+		// ignore all commands that are not registered by the bot
+		if !isCMDRegistered(v.Name) {
+			continue
+		}
+
+		logrus.WithField("cmd", v.Name).Warn("Deleting slash command")
 		err := s.ApplicationCommandDelete(s.State.User.ID, "", v.ID)
 		if err != nil {
-			logrus.Fatalf("Cannot delete '%v' command: %v", v.Name, err)
+			logrus.Fatalf("Failed to delete the '%v' slash command: %v", v.Name, err)
 		}
 	}
 
-	// TODO: register only non-registered commands
 	for _, v := range commands.Commands {
-		logrus.Warnf("Registering command: %s", v.Name)
+		// ignore all commands that are registered by the bot
+		if isCMDRegistered(v.Name) {
+			continue
+		}
+
+		logrus.WithField("cmd", v.Name).Warn("Creating slash command")
 		_, err := s.ApplicationCommandCreate(s.State.User.ID, "", v)
 		if err != nil {
-			logrus.Errorf("Cannot create '%v' command: %v", v.Name, err)
+			logrus.Errorf("Failed to create the '%v' slash command: %v", v.Name, err)
 			return
 		}
 	}
-	logrus.Info("Slash commands registered.")
+	logrus.Info("Done processing slash commands")
 
-	if err := s.UpdateStatusComplex(discordgo.UpdateStatusData{
+	err = s.UpdateStatusComplex(discordgo.UpdateStatusData{
 		Activities: []*discordgo.Activity{
 			{
-				Name: "slash commands!",
+				Name: "slash commands.",
 				Type: discordgo.ActivityTypeListening,
 			},
 		},
-	}); err != nil {
+	})
+	if err != nil {
 		logrus.Fatalf("error updating bot self status: %v", err)
 	}
 	logrus.Info("Bot status updated")
