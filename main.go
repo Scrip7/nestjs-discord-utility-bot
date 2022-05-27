@@ -15,7 +15,7 @@ import (
 
 func main() {
 	core.InitLogger()
-	godotenv.Load()
+	_ = godotenv.Load()
 
 	cache.Init()
 	cache.BootstrapContent()
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, syscall.SIGTERM)
 	<-sc
 
 	// cleanly close down the Discord session.

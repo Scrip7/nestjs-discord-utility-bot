@@ -16,7 +16,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// TODO: only allow admins to use this command
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "ping" {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
+		_, _ = s.ChannelMessageSend(m.ChannelID, "Pong!")
 		return
 	}
 }

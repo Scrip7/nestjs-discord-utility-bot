@@ -14,20 +14,20 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	// check cache if the tag exists
 	content, ok := cache.Driver.Get(name)
 	if ok {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		_ = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Content: content.(string),
 			},
 		})
 	} else {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		_ = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Content: "Content not found.",
 			},
 		})
-		s.ApplicationCommandDelete(s.State.User.ID, "", i.ID)
-		s.ApplicationCommandDelete(s.State.User.ID, i.GuildID, i.ID)
+		_ = s.ApplicationCommandDelete(s.State.User.ID, "", i.ID)
+		_ = s.ApplicationCommandDelete(s.State.User.ID, i.GuildID, i.ID)
 	}
 }
